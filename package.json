@@ -1,0 +1,59 @@
+{
+  "name": "issue-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@atlaskit/avatar": "^18.0.1",
+    "@atlaskit/button": "^13.4.1",
+    "@atlaskit/comment": "^9.3.7",
+    "@atlaskit/dropdown-menu": "^9.0.4",
+    "@atlaskit/form": "^7.2.1",
+    "@atlaskit/icon": "^20.1.2",
+    "@atlaskit/icon-object": "^5.0.3",
+    "@atlaskit/icon-priority": "^5.0.3",
+    "@atlaskit/modal-dialog": "^10.5.7",
+    "@atlaskit/textarea": "^2.2.7",
+    "@atlaskit/textfield": "^3.1.9",
+    "@aws-amplify/ui-react": "^0.2.9",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@testing-library/jest-dom": "^5.5.0",
+    "@testing-library/react": "^10.0.4",
+    "@testing-library/user-event": "^10.1.0",
+    "aws-amplify": "^3.0.18",
+    "axios": "^0.19.2",
+    "bootstrap": "^4.5.0",
+    "react": "^16.13.1",
+    "react-beautiful-dnd": "^13.0.0",
+    "react-bootstrap": "^1.0.1",
+    "react-burger-menu": "^2.6.17",
+    "react-dom": "^16.13.1",
+    "react-quill": "^1.3.5",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1",
+    "react-select": "^3.1.0",
+    "styled-components": "^5.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
