@@ -8,7 +8,6 @@ import transformResponseData from "../transformResponseData";
 import CreateIssue from '../Issue/CreateIssue';
 
 import Button from '@atlaskit/button';
-import BoardData from '../Issue/BoardData';
 
 import GetBoardData from './GetBoardData';
 
@@ -17,6 +16,8 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Tooltip from '@material-ui/core/Tooltip';
 import TopAppBar from '../TopAppBar';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+
+import Api from '../api-config';
 
 
 const Container = styled.div`
@@ -85,36 +86,6 @@ export default class Board extends Component {
         console.log(this.state.data); */
     }
 
-    async loadMembers () {
-      /*   let members;
-        let finalMembers = [];
-        await axios({
-            method: 'post',
-            url: 'http://localhost:8080/api/users/members/team-members',
-            data: {
-                teamName: "My Team",
-            }
-        }).then((response) => {
-            members = response.data;
-            let obj;
-
-            for (let i = 0; i < members.length; i++) {
-                //console.log("index", response.data);
-                obj = {
-                    username: members[i].username,
-                    avatar: members[i].avatar,
-                }
-                finalMembers.push(obj);
-            }
-
-            
-            this.setState({
-                members: finalMembers,
-            });
-        }) */
-        
-    }
-
     updateBoardOnCreate = issue => {
         const newState = {
             ...this.state.data,
@@ -128,7 +99,6 @@ export default class Board extends Component {
                     priority: issue.priority,
                     type: issue.type,
                     index: issue.index,
-                    //comments: [],
                     issueId: issue.issueId,
                     reporter_username: issue.reporter_username,
                     reporter_avatar: issue.reporter_avatar,
@@ -318,7 +288,7 @@ export default class Board extends Component {
                 
                 axios({
                     method: 'put',
-                    url: 'http://localhost:8080/api/issues/single-column',
+                    url: Api.domain + 'issues/single-column',
                     data: {
                         issue_id: issueId,
                         position: issues[key].position,
@@ -333,7 +303,7 @@ export default class Board extends Component {
 
             axios({
                 method: 'put',
-                url: 'http://localhost:8080/api/issues/multiple-columns',
+                url: Api.domain + 'issues/multiple-columns',
                 data: {
                     issue_id: issueId,
                     position: issues[key].position,
@@ -385,7 +355,7 @@ export default class Board extends Component {
 
         axios({
             method: 'delete',
-            url: 'http://localhost:8080/api/issues/' + issueKey.replace("issue-",""),
+            url: Api.domain + 'issues/' + issueKey.replace("issue-",""),
             data: {
                 
             }
@@ -398,20 +368,6 @@ export default class Board extends Component {
         })
         
     }
-
-    //Remove if not needed
-    /* initBoard = () => {
-        axios({
-            method: 'post',
-            url: 'http://localhost:8080/api/boards/get',
-            data: {
-                username: "aaat"
-            }
-        }).then((response) => {
-           console.log(response);
-        })
-
-    } */
 
     render = () => {
         return (

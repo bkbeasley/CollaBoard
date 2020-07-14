@@ -12,7 +12,6 @@ import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 
 import IssueType from '../Issue/Modal/IssueType';
 import Description from '../Issue/Modal/Description';
-//import Comments from '../Issue/Modal/Comments';
 import Assignee from './Modal/Assignee';
 import Reporter from './Modal/Reporter';
 import Priority from './Modal/Priority';
@@ -22,6 +21,8 @@ import TestPriority from './Modal/TestPriority';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Tooltip } from '@material-ui/core';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+
+import Api from '../api-config';
 
 const Container = styled.div`
     display: inline-block;
@@ -116,7 +117,7 @@ export default class EditIssue extends Component {
     sendPutRequest = issue => {
         axios({
             method: 'put',
-            url: 'http://localhost:8080/api/issues/edit',
+            url: Api.domain + 'issues/edit',
             data: {
                 issue_id: parseInt(this.props.issue.issueId.replace("issue-","")),
                 type: issue.type,
@@ -228,8 +229,6 @@ export default class EditIssue extends Component {
                             <SubHeading>Description</SubHeading>
                             <Description description={this.props.issue.description} onChangeValue={this.handleChangeValue} />
                             <BottomPadding />
-{/*                             <SubHeading>Comments</SubHeading>
-                            <Comments comments={this.props.issue.comments} issue={this.props.issue} /> */}
                             </Left>
                             <Right>
                                 <SubHeading>Reporter</SubHeading>

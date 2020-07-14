@@ -9,14 +9,13 @@ import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 
 import Description from '../Issue/Modal/Description';
 import Assignee from './Modal/Assignee';
-import Reporter from './Modal/Reporter';
-import Priority from './Modal/Priority';
-import Dropdown from './Modal/Dropdown';
 import TypeDropDown from './Modal/Dropdown/TypeDropDown';
 import TestPriority from './Modal/TestPriority';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+
+import Api from '../api-config';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -155,12 +154,10 @@ export default class CreateIssue extends Component {
             assignee_avatar: assignee_avatar,
         }
 
-        console.log("HERE's the object: ", obj.priority);
-
         //Get the current Board's current issue_index
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/boards/index/',
+            url: Api.domain + 'boards/index/',
             data: {
                 boardId: this.props.boardId,
             }
@@ -170,7 +167,7 @@ export default class CreateIssue extends Component {
             //Create the Issue on the backend
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/api/issues/',
+                url: Api.domain + 'issues/',
                 data: {
                     column_id: columnId,
                     position: 0,
@@ -192,7 +189,7 @@ export default class CreateIssue extends Component {
                 //Increment the Board's current issue_index
                 axios({
                     method: 'put',
-                    url: 'http://localhost:8080/api/boards/index/update/',
+                    url: Api.domain + 'boards/index/update/',
                     data: {
                         boardId: this.props.boardId,
                     }

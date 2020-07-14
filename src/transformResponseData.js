@@ -58,7 +58,6 @@ function transformIssues(issues) {
                 columnId: currentObj.column_id,
                 type: currentObj.type,
                 index: currentObj.issueIndex.toString(),
-                //comments: currentObj.comments,
                 priority: currentObj.priority,
                 reporter_username: currentObj.reporter_username,
                 reporter_avatar: currentObj.reporter_avatar,

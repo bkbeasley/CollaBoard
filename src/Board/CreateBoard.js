@@ -15,6 +15,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { useHistory, Redirect } from 'react-router-dom';
 
+import Api from '../api-config';
+
 import Amplify, { Auth, a } from 'aws-amplify';
 import awsconfig from '../aws-exports';
 Amplify.configure(awsconfig);
@@ -77,7 +79,7 @@ export default class CreateBoard extends Component {
     updateBoardId(boardId) {
         const id = parseInt(boardId);
 
-        axios.put('http://localhost:8080/api/users/board-id', {
+        axios.put(Api.domain + 'users/board-id', {
             boardId: id,
             username: owner,
         })
@@ -87,7 +89,7 @@ export default class CreateBoard extends Component {
     }
 
     updateBoardMember() {
-        axios.put('http://localhost:8080/api/users/board-member', {
+        axios.put(Api.domain + 'users/board-member', {
             username: owner,
         })
         .then( () => {
@@ -98,7 +100,7 @@ export default class CreateBoard extends Component {
 
     loadBoardData(boardId) {
         const id = parseInt(boardId);
-        axios.post('http://localhost:8080/api/boards/get', {
+        axios.post(Api.domain + 'boards/get', {
             boardId: id,
         })
         .then(response => {
@@ -123,7 +125,7 @@ export default class CreateBoard extends Component {
 
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/boards',
+            url: Api.domain + 'boards',
             data: {
                 columns: columns,
                 boardName: data['board-name'],
@@ -137,7 +139,7 @@ export default class CreateBoard extends Component {
     updateBoardOwner() {
         axios({
             method: 'put',
-            url: 'http://localhost:8080/api/users/board-owner',
+            url: Api.domain + 'users/board-owner',
             data: {
                 username: owner,
             }

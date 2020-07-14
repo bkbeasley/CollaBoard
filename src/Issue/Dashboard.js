@@ -10,20 +10,12 @@ import { Auth } from 'aws-amplify';
 import styled from 'styled-components';
 
 import axios from 'axios';
-import BoardData from './BoardData';
 import TeamStage from '../Team/TeamStage';
 import TeamRequest from '../Team/TeamRequest';
 
 import Avatar from '@atlaskit/avatar';
 
-import SideBar from '../SideBar';
-
 import { push as Menu } from 'react-burger-menu';
-import '../assets/css/side-bar.css';
-
-import PeopleGroupIcon from '@atlaskit/icon/glyph/people-group';
-import PersonIcon from '@atlaskit/icon/glyph/person';
-import BoardIcon from '@atlaskit/icon/glyph/board';
 
 import Nav from 'react-bootstrap/Nav';
 
@@ -32,6 +24,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TopAppBar from '../TopAppBar';
 import CreateBoard from '../Board/CreateBoard';
 import CreateTeam from '../CreateTeam';
+
+import Api from '../api-config';
 
 
 const Container = styled.div`
@@ -178,14 +172,14 @@ function Dashboard() {
             result = await Auth.currentUserInfo();
 
             //Testing 
-            await axios.post('http://localhost:8080/api/users/member', {
+            await axios.post(Api.domain + 'users/member', {
                 username: username,
             })
             .then(response => {
                 setHasBoard(response.data);
             });
 
-            await axios.post('http://localhost:8080/api/users/board-id', {
+            await axios.post(Api.domain + 'users/board-id', {
                 username: username,
             })
             .then(response => {
@@ -207,7 +201,7 @@ function Dashboard() {
             if ({hasBoard}) {
                 axios({
                     method: 'post',
-                    url: 'http://localhost:8080/api/boards/name',
+                    url: Api.domain + 'boards/name',
                     data: {
                         boardId: id,
                     }
@@ -231,7 +225,7 @@ function Dashboard() {
     function loadAvatar() {
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/users/avatar',
+            url: Api.domain + 'users/avatar',
             data: {
                 username: username,
             }
@@ -244,7 +238,7 @@ function Dashboard() {
         //Check if the user is a board owner
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/users/board-owner',
+            url: Api.domain + 'users/board-owner',
             data: {
                 username: username,
             }
@@ -257,7 +251,7 @@ function Dashboard() {
             //Check if the user is a team member
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/api/users/team-member',
+                url: Api.domain + 'users/team-member',
                 data: {
                     username: username,
                 }
@@ -266,7 +260,7 @@ function Dashboard() {
 
                 axios({
                     method: 'post',
-                    url: 'http://localhost:8080/api/users/team-name',
+                    url: Api.domain + 'users/team-name',
                     data: {
                         username: username,
                     }
@@ -281,7 +275,7 @@ function Dashboard() {
     async function checkTeam() {
         await axios({
             method: 'post',
-            url: 'http://localhost:8080/api/users/team-member',
+            url: Api.domain + 'users/team-member',
             data: {
                 username: username,
             }
@@ -302,7 +296,7 @@ function Dashboard() {
     function viewMyTeam() {
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/users/team-owner',
+            url: Api.domain + 'users/team-owner',
             data: {
                 username: username,
             }
@@ -311,7 +305,7 @@ function Dashboard() {
 
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/api/users/team-name',
+                url: Api.domain + 'users/team-name',
                 data: {
                     username: username,
                 }
@@ -323,7 +317,7 @@ function Dashboard() {
     }
 
     async function getBoardData() {
-        await axios.post('http://localhost:8080/api/boards/get', {
+        await axios.post(Api.domain + 'boards/get', {
             boardId: boardId,
         })
         .then(response => {

@@ -12,6 +12,7 @@ import styled from 'styled-components';
 
 import { useHistory, Redirect } from 'react-router-dom';
 
+import Api from '../api-config';
 
 let username = null;
 let hasBoard = null;
@@ -53,7 +54,7 @@ function GetBoardData() {
             result = await Auth.currentUserInfo();
 
             //Testing
-            await axios.post('http://localhost:8080/api/users/member', {
+            await axios.post(Api.domain + 'users/member', {
                 username: username,
             })
             .then(response => {
@@ -64,7 +65,7 @@ function GetBoardData() {
             //let id = result.attributes['custom:boardId'];
             //id = parseInt(id);
 
-            await axios.post('http://localhost:8080/api/users/board-id', {
+            await axios.post(Api.domain + 'users/board-id', {
                 username: username,
             })
             .then(response => {
@@ -72,7 +73,7 @@ function GetBoardData() {
             })
 
             //Testing to get the team name
-            await axios.post('http://localhost:8080/api/users/team-name', {
+            await axios.post(Api.domain + 'users/team-name', {
                 username: username
             }).then(response => {
                 teamName = response.data;
@@ -84,20 +85,19 @@ function GetBoardData() {
             })
 
             //boardId = id;
-            await axios.post('http://localhost:8080/api/boards/get', {
+            await axios.post(Api.domain + 'boards/get', {
                 boardId: boardId,
             })
             .then(response => {
                 boardName = response.data.boardName;
                 boardData = transformResponseData(response.data);
-                //getMembers();
 
                 let obj = {};
                 let finalMembers = [];
 
                 //If the user has not created a team yet
                 if (noTeam) {
-                    axios.post('http://localhost:8080/api/users/avatar', {
+                    axios.post(Api.domain + 'users/avatar', {
                         username: username
                     })
                     .then(response => {
@@ -114,7 +114,7 @@ function GetBoardData() {
                     })
                 }
 
-                axios.post('http://localhost:8080/api/users/members/team-members', {
+                axios.post(Api.domain + 'users/members/team-members', {
                     teamName: teamName,
                 })
                 .then(response => {
@@ -151,26 +151,6 @@ function GetBoardData() {
                 return;
             }
         }
-    }
-
-    async function getMembers() {
-        let obj;
-        let finalMembers = [];
-
-        await axios.post('http://localhost:8080/api/users/members/team-members', {
-            teamName: "My Team",
-        })
-        .then(response => {
-            let members = response.data;
-
-            for (let i = 0; i < members.length; i++) {
-                obj = {
-                    username: members[i].username,
-                    avatar: members[i].avatar,
-                }
-                finalMembers.push(obj);
-            }
-        });
     }
 
     if (!loading) {

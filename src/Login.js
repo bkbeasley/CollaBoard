@@ -33,58 +33,7 @@ export default function Login() {
    const history = useHistory();
    const [loginError, setLoginError] = useState(false);
 
-  /* function validateUser(userData) {
-  
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/api/users/validate',
-      data: {
-          username: userData.username,
-          password: userData.password,
-      }
-    }).then(response => {
-        if (!response.data) {
-          console.log("Incorrect username or passsword.");
-        }
-        else {
-          isBoardMember(userData.username);
-        }
-    })
-  }
-
-  function isBoardMember(username) {
-    const name = username;
-    axios({
-      method: 'post',
-      url: 'http://localhost:8080/api/users/member',
-      data: {
-          username: name,
-      }
-      }).then(response => {
-        //If the user is not a member of a Board
-          if (!response.data) {
-            history.push("/board", 
-            {   dataSent: null, 
-                boardMember: false,
-            });
-          }
-          else {
-            getBoardData(name);
-          }  
-     })
-  }
-
-  function getBoardData(username) {
-    axios.post('http://localhost:8080/api/boards/get2', {
-            username: username,
-        })
-        .then(response => {
-          history.push("/board", { dataSent: response.data, boardMember: true })
-        })
-  } */
-
   async function validateUser(userData) {
-    //setLoginError(true);
     const username = userData.username;
     const password = userData.password;
 
@@ -98,7 +47,6 @@ export default function Login() {
         if (error.message === "User does not exist.") {
           
           setLoginError(true);
-          console.log("HH", loginError);
         }
     }
 
@@ -190,37 +138,4 @@ export default function Login() {
       </div>
     );
 }
-
-/* export default class Login extends React.Component() {
-    //const history = useHistory();
-    //const axios = require('axios').default;
-
-  /*   getBoardData() {
-        let boardData = null;
-        axios({
-            method: 'get',
-            url: 'http://localhost:8080/login2',
-            data: {
-                
-            }
-        }).then(() => {
-            console.log("IIIDJID");
-        })
-
-        /* axios.post('http://localhost:8080/api/login', {
-            username: 'at',
-        })
-        .then(response => {
-            boardData = response.data;
-            history.push("/board", { dataSent: boardData });
-        })
-        .catch(error => console.log(error)) */
-    
-    
-    /* return (
-        <Button appearance="primary" onClick={getBoardData}>Log In</Button>
-    ) */    
-    
- 
-
  

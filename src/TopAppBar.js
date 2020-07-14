@@ -23,6 +23,8 @@ import { useHistory, Redirect, Route } from 'react-router-dom';
 
 import createHistory from 'history/createBrowserHistory';
 
+import Api from './api-config';
+
 import Dashboard from './Issue/Dashboard';
 import Login from './Login';
 import GetBoardData from './Board/GetBoardData';
@@ -117,7 +119,7 @@ export default function TopAppBar() {
     async function loadAvatar(username) {
         await axios({
             method: 'post',
-            url: 'http://localhost:8080/api/users/avatar',
+            url: Api.domain + 'users/avatar',
             data: {
                 username: username,
             }

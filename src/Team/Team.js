@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import Table from 'react-bootstrap/Table';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
 
 import styled from 'styled-components';
-
-//import Avatar, { AvatarItem } from '@atlaskit/avatar';
 
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
@@ -23,6 +19,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 import { useHistory, Redirect } from 'react-router-dom';
+
+import Api from '../api-config';
 
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../aws-exports';
@@ -100,8 +98,6 @@ const useStyles = makeStyles((theme) => ({
 
 const avatarUrl = 'https://api.adorable.io/avatars/285/';
 
-//const boardId = null;
-
 function Team(props) {
 
     if (props.history.location.state === undefined) {
@@ -120,7 +116,6 @@ function Team(props) {
         getRequestorAvatar()
     }, []);
     
-
     const history = useHistory();
 
     const [teamName, setTeamName] = useState(props.history.location.state.teamName);
@@ -132,27 +127,6 @@ function Team(props) {
     const [toDashboard, setToDashboard] = useState(false);
 
     const classes = useStyles();
-
-/*     if (props.history.location.state !== undefined) {
-        setTeamName(props.history.location.state.teamName);
-        setTeamOwner(props.history.location.state.teamOwner);
-        setMembers(props.history.location.state.members);
-        setCurrentUser(props.history.location.state.currentUser);
-    } */
-
-
-    /* state = {
-        teamName: this.props.history.location.state.teamName,
-        teamOwner: this.props.history.location.state.teamOwner,
-        members: this.props.history.location.state.members,
-        requests: null,
-        currentUser: this.props.history.location.state.currentUser,
-    } */
-
-/*     componentDidMount(){
-        this.loadRequests();
-    }
- */
 
     async function checkUser() {
 
@@ -186,7 +160,7 @@ function Team(props) {
     async function checkTeamMember(username) {
         await axios({
             method: 'post',
-            url: 'http://localhost:8080/api/users/team-member',
+            url: Api.domain + 'users/team-member',
             data: {
                 username: username,
             }
@@ -203,7 +177,7 @@ function Team(props) {
     async function signedInNoProps(username) {
         await axios({
             method: 'post',
-            url: 'http://localhost:8080/api/users/team-owner',
+            url: Api.domain + 'users/team-owner',
             data: {
                 username: username,
             }
@@ -212,7 +186,7 @@ function Team(props) {
 
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/api/users/team-name',
+                url: Api.domain + 'users/team-name',
                 data: {
                     username: username,
                 }
@@ -231,20 +205,19 @@ function Team(props) {
 
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/request/view',
+            url: Api.domain + 'request/view',
             data: {
                 owner: currentUser,
             }
         }).then((response) => {
             setRequests(response.data);
-            console.log("REQUESTS: ", response.data);
         }) 
     }
 
     function acceptRequest(requestor, index) {
         axios({
             method: 'put',
-            url: 'http://localhost:8080/api/users/team-name',
+            url: Api.domain + 'users/team-name',
             data: {
                 username: requestor,
                 teamName: teamName,
@@ -252,13 +225,12 @@ function Team(props) {
         }).then(() => {
             axios({
                 method: 'put',
-                url: 'http://localhost:8080/api/users/team-member',
+                url: Api.domain + 'users/team-member',
                 data: {
                     username: requestor,
                 }
             }).then(() => {
                 updateUserMembership(requestor);
-                //this.updateAttributes();
                 deleteRequest(requestor, index);
             })
         })
@@ -268,7 +240,7 @@ function Team(props) {
 
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/request/view',
+            url: Api.domain + 'request/view',
             data: {
                 owner: username,
             }
@@ -281,7 +253,7 @@ function Team(props) {
         
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/teams/members',
+            url: Api.domain + 'teams/members',
             data: {
                 name: teamName,
             }
@@ -294,7 +266,7 @@ function Team(props) {
     function deleteRequest(requestor, index) {
         axios({
             method: 'DELETE',
-            url: 'http://localhost:8080/api/request/',
+            url: Api.domain + 'request/',
             data: {
                 requestor: requestor,
             }
@@ -312,7 +284,7 @@ function Team(props) {
 
         axios({
             method: 'PUT',
-            url: 'http://localhost:8080/api/users/board-member',
+            url: Api.domain + 'users/board-member',
             data: {
                 username: requestor,
             }
@@ -320,7 +292,7 @@ function Team(props) {
             //Get the board id from the board owner
             axios({
                 method: 'POST',
-                url: 'http://localhost:8080/api/users/board-id',
+                url: Api.domain + 'users/board-id',
                 data: {
                     username: currentUser,
                 }
@@ -329,7 +301,7 @@ function Team(props) {
 
                 axios({
                     method: 'PUT',
-                    url: 'http://localhost:8080/api/users/board-id',
+                    url: Api.domain + 'users/board-id',
                     data: {
                         username: requestor,
                         boardId: boardId,
@@ -352,34 +324,6 @@ function Team(props) {
         })
     }
 
-    async function updateAttributes(boardId) {
-        try {
-            
-            //let result = await Auth.currentUserInfo();
-            //console.log("result: ", result);
-
-            Auth.currentAuthenticatedUser()
-                .then(user => {
-                    return Auth.updateUserAttributes(user, {'custom:hasBoard': 'true', 'custom:boardId': boardId},);
-                })
-                .then(data => {
-                    if (data === "SUCCESS") {
-                       // this.loadBoardData(boardId);
-                    }
-                    else {
-                        console.log("ERROR", data);
-                    }
-                    
-                    //console.log(data);
-                })
-                .catch(err => console.log(err));
-        } 
-        catch (err) { 
-            
-            console.log('error: ', err) 
-        }
-    }
-
     if (isLoading) {
         return(
             <LoadingContainer>
@@ -389,9 +333,7 @@ function Team(props) {
     }
 
     if (toDashboard) {
-        
-            history.push('/dashboard');
-        
+            history.push('/dashboard'); 
     }
 
     //If the user is signed in
@@ -414,37 +356,9 @@ function Team(props) {
                     </AvatarGroup>
                 </Container>
 
-                {/* <Table hover responsive size="sm">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Username</th>
-                            <th>Role</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {members.map((member, index) => {
-                            return(
-                            <tr>
-                            <td>{index + 1}</td>
-                            <td>{member.username}</td>
-                            {member.teamOwner === true && (
-                                <td>Owner</td>
-                            )}
-                            {member.teamOwner === false && (
-                                <td>Member</td>
-                            )}
-                            </tr>
-                            );
-                        })} 
-                    </tbody>
-                </Table>
-                <br /> */}
-
                 {teamOwner && (
                     <div>
                         <br />
-                        
                         <SubHeading>Pending Requests:</SubHeading>
 
                         {requests !== null && !requests.length && (
@@ -477,30 +391,6 @@ function Team(props) {
                         })}
                         </List>
                         </ListContainer>
-                        {/* <Table hover responsive size="sm">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Requester</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {requests != null && requests.map((requestor, index) => {
-                                    return(
-                                    <tr>
-                                    <td>{index + 1}</td>
-                                    <td>{requestor.requestor}</td>
-                                    <td>
-                                        <Spacing>
-                                        <Button variant="success" onClick={() => acceptRequest(requestor.requestor, index)}>Accept</Button>
-                                        </Spacing>
-                                        <Button variant="danger" onClick={() => deleteRequest(requestor.requestor, index)}>Decline</Button>
-                                    </td>
-                                    </tr>
-                                    );
-                                })} 
-                            </tbody>
-                        </Table> */}
                     </div>
                 )}
             </div>

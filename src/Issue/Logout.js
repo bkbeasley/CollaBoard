@@ -54,7 +54,6 @@ export default function Logout() {
     }
 
     if (redirect === true) {
-        console.log("YOYUOYO ", user);
         return (
             <Home />
         )

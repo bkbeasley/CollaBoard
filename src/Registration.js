@@ -16,7 +16,10 @@ import Amplify, { Auth, signInButton } from 'aws-amplify';
 import awsconfig from './aws-exports';
 import TopAppBar from './TopAppBar';
 
+import Api from './api-config';
+
 Amplify.configure(awsconfig);
+
 
 let username = '';
 let password = '';
@@ -40,6 +43,8 @@ export default function Registration() {
         username = userData.username;
         password = userData.password;
 
+        console.log("Config: ", Auth.configure);
+
         try {
             const user = await Auth.signUp({
                 username,
@@ -56,19 +61,6 @@ export default function Registration() {
             console.log('error signing up:', error);
         }
 
-        /* axios({
-            method: 'post',
-            url: 'http://localhost:8080/api/users',
-            data: {
-                username: userData.username,
-                password: userData.password,
-            }
-        }).then(() => {
-            history.push("/board", 
-            {   data: null, 
-                boardMember: false,
-            });
-        }) */
     }
 
     function addUser() {
@@ -76,13 +68,12 @@ export default function Registration() {
 
         axios({
             method: 'post',
-            url: 'http://localhost:8080/api/users/',
+            url: Api.domain + 'users/',
             data: {
                 username: username,
                 avatar: avatar,
             }
         }).then(() => {
-                //console.log("Finished adding new user");
             
         });
     }

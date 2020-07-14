@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import Button from '@atlaskit/button';
 import axios from 'axios';
-import TopNav from './TopNav';
 import TopAppBar from './TopAppBar';
 
 import { useHistory } from "react-router-dom";

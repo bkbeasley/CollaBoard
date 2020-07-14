@@ -4,6 +4,8 @@ import { useHistory, Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 
+import Api from '../api-config';
+
 function TeamStage(data) {
     const history = useHistory();
     let teamName = data.teamName;
@@ -15,7 +17,7 @@ function TeamStage(data) {
     //Retrieve a list of all team members
     axios({
         method: 'post',
-        url: 'http://localhost:8080/api/teams/members',
+        url: Api.domain + 'teams/members',
         data: {
             name: teamName,
         }
@@ -29,13 +31,6 @@ function TeamStage(data) {
     }
 
     return null;
-
-    //history.push("/team", { teamName: teamName, teamOwner: teamOwner });
-
-    //Not sure if used anywhere else can remove this if not needed
-    /* return (
-        history.push("/board", { dataSent: response.data, boardMember: true });
-    ); */
 }
 
 export default TeamStage;
