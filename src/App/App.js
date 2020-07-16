@@ -17,6 +17,9 @@ import TeamRequest from '../Team/TeamRequest';
 import GetBoardData from '../Board/GetBoardData';
 import LogoutStage from '../LogoutStage';
 
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+
+
 
 function App() {
 
@@ -42,4 +45,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App);
