@@ -55,7 +55,7 @@ export default function Registration() {
             //Sign the new user in
             signIn();
         } catch (error) {
-            //console.log('error signing up:', error);
+            console.log('error signing up:', error);
         }
 
     }
@@ -83,13 +83,14 @@ export default function Registration() {
     }
 
     async function signIn() {
+        console.log("RRRR");
         
         try {
             const user = await Auth.signIn(username, password);
             history.push("/dashboard")
             
         } catch (error) {
-            //console.log('error signing in', error);
+            console.log('error signing in', error);
         }
     
     }
@@ -99,7 +100,7 @@ export default function Registration() {
         try {
             await Auth.signOut({ global: true });
         } catch (error) {
-            //console.log('error signing out: ', error);
+            console.log('error signing out: ', error);
         }
     }
 

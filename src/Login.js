@@ -31,7 +31,6 @@ const CreateStyle = styled.div`
 `
 
 export default function Login() {
-  
    const history = useHistory();
    const [loginError, setLoginError] = useState(false);
 
@@ -40,11 +39,12 @@ export default function Login() {
     const password = userData.password;
 
       try {
+        console.log("WELCOME ");
         await Auth.signIn(username, password);
         history.push("/dashboard")
         
     } catch (error) {
-        //console.log('error signing in', error);
+        console.log('error signing in', error);
 
         if (error.message === "User does not exist.") {
           setLoginError(true);
