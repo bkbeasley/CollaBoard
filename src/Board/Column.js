@@ -10,7 +10,7 @@ const Container = styled.div`
     width: 220px;
     min-height: 500px;
     display: flex;
-    background-color: #f4f5f7;
+    background-color: #EBECF0;
     flex-direction: column;
     flex: 1;
     justify-content: center;
@@ -30,7 +30,7 @@ const CardList = styled.div`
     paddding: 8px;
     flex-grow: 1;
     min-height: 100px;
-    background-color: ${props => (props.isDraggingOver ? '#B3F5FF' : '#f4f5f7')};
+    background-color: ${props => (props.isDraggingOver ? '#B3F5FF' : '#EBECF0')};
 `
 
 

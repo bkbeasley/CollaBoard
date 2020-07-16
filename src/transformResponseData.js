@@ -1,6 +1,6 @@
 export default function transformResponseData(obj) {
     if (obj === null) {
-        console.log("Error: Board data cannot be null.");
+        //console.log("Error: Board data cannot be null.");
         return;
     }
     const initialColumns = obj.columns;
@@ -115,7 +115,6 @@ function createIssueIds(columns, issues) {
         columns[i].issueIds = [];
     }
 
-    //Testing
     if (issues.length === 0) {
         return;
     }

@@ -90,7 +90,6 @@ export default class EditIssue extends Component {
 
     handleChangeValue = (val) => {
         descriptionContent = val;
-        //console.log("description content:",descriptionContent);
     }
 
     setPriority = (val) => {
@@ -140,8 +139,6 @@ export default class EditIssue extends Component {
 
     openDeleteModal = () => {
         this.setState({deleteModalOpened: true,})
-
-        //this.props.deleteIssue(this.props.issue.issueId); 
     }
 
     closeDeleteModal = () => {
@@ -209,7 +206,6 @@ export default class EditIssue extends Component {
                             <ToolTipStyled title="Delete Issue" placement="bottom" arrow>
                                 <Button onClick={() => this.openDeleteModal()} iconBefore={<DeleteIcon />} />
                             </ToolTipStyled>
-                                {/*<Button iconBefore={<EditorCloseIcon size="large" />} onClick={this.props.closeModal} /> */}
                         </ModalTop>
                         <Left>
                             <br/>
@@ -237,7 +233,6 @@ export default class EditIssue extends Component {
                                 <SubHeading>Assignee</SubHeading>
                                 <Assignee members={this.props.members} currentAssigneeName={this.props.issue.assignee_username} currentAssigneeAvatar={this.props.issue.assignee_avatar} setAssignee={this.setAssignee} />
                                 <BottomPadding />
-                                {/*<Priority priority={this.props.issue.priority} setPriority={this.setPriority} /> */}
                                 <SubHeading>Priority</SubHeading>
                                 <TestPriority defaultVal={this.props.issue.priority} setPriority={this.setPriority} />
                             </Right>

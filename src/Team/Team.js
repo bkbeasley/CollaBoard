@@ -18,13 +18,14 @@ import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Api from '../api-config';
 
+import TopAppBar from '../TopAppBar';
+
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../aws-exports';
-import TopAppBar from '../TopAppBar';
 Amplify.configure(awsconfig);
 
 const Spacing = styled.div`
@@ -73,10 +74,10 @@ const ListContainer = styled.div`
 
 const ToolTipStyled = withStyles((theme) => ({
     arrow: {
-        color: '#5243AA',
+        color: '#0065FF',
       },
     tooltip: {
-      backgroundColor: "#5243AA",
+      backgroundColor: "#0065FF",
       color: 'white',
       boxShadow: theme.shadows[1],
       fontSize: 12,
@@ -131,8 +132,8 @@ function Team(props) {
     async function checkUser() {
 
         try{
-            const data = await Auth.currentUserPoolUser()
-            const userInfo = { username: data.username, ...data.attributes, }
+            const data = await Auth.currentUserPoolUser();
+            const userInfo = { username: data.username, ...data.attributes, };
             let username = userInfo['username'];
 
             //If the user has not created a team, return them to the dashboard
@@ -146,14 +147,12 @@ function Team(props) {
 
             signedInNoProps(username);
             loadRequestsNoProps(username);
-            //setMembers([]);
-
         }
         catch (err) {
             if (err === 'No current user') {
                 history.push('/login');  
             } 
-            console.log('error: ', err);
+            //console.log('error: ', err);
         }
     }
 

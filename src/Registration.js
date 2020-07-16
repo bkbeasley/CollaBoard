@@ -20,7 +20,6 @@ import Api from './api-config';
 
 Amplify.configure(awsconfig);
 
-
 let username = '';
 let password = '';
 
@@ -43,8 +42,6 @@ export default function Registration() {
         username = userData.username;
         password = userData.password;
 
-        console.log("Config: ", Auth.configure);
-
         try {
             const user = await Auth.signUp({
                 username,
@@ -58,7 +55,7 @@ export default function Registration() {
             //Sign the new user in
             signIn();
         } catch (error) {
-            console.log('error signing up:', error);
+            //console.log('error signing up:', error);
         }
 
     }
@@ -92,103 +89,89 @@ export default function Registration() {
             history.push("/dashboard")
             
         } catch (error) {
-            console.log('error signing in', error);
+            //console.log('error signing in', error);
         }
     
     }
 
-    //If the user is trying to access this page and they're signed in, sign them out
+    //If the user is trying to access this page when they're signed in, sign them out
     async function signOut() {
         try {
             await Auth.signOut({ global: true });
         } catch (error) {
-            console.log('error signing out: ', error);
+            //console.log('error signing out: ', error);
         }
     }
 
-    //If the user is trying to access this page and they're signed in, sign them out
-    /* try {
-        await Auth.signOut({ global: true });
-    } catch (error) {
-        console.log('error signing out: ', error);
-    } */
-
-
-    
     return (
         <div>
             <TopAppBar />
             <Container>
-        <Form onSubmit={data => registerUser(data)}>
-        {({ formProps, submitting }) => (
-            <form {...formProps}>
-            <Field
-                name="username"
-                label="User name"
-                isRequired
-                defaultValue=""
-            >
-                {({ fieldProps, error }) => (
-                <Fragment>
-                    <TextField autoComplete="off" {...fieldProps} />
-                    {!error && (
-                    <HelperMessage>
-                        You can use letters, numbers & symbols.
-                    </HelperMessage>
-                    )}
-                    {error && (
-                    <ErrorMessage>
-                        This user name is already in use, try another one.
-                    </ErrorMessage>
-                    )}
-                </Fragment>
+                <Form onSubmit={data => registerUser(data)}>
+                {({ formProps, submitting }) => (
+                    <form {...formProps}>
+                    <Field
+                        name="username"
+                        label="User name"
+                        isRequired
+                        defaultValue=""
+                    >
+                        {({ fieldProps, error }) => (
+                        <Fragment>
+                            <TextField autoComplete="off" {...fieldProps} />
+                            {!error && (
+                            <HelperMessage>
+                                You can use letters, numbers & symbols.
+                            </HelperMessage>
+                            )}
+                            {error && (
+                            <ErrorMessage>
+                                This user name is already in use, try another one.
+                            </ErrorMessage>
+                            )}
+                        </Fragment>
+                        )}
+                    </Field>
+                    <Field
+                        name="password"
+                        label="Password"
+                        defaultValue=""
+                        isRequired
+                        validate={value =>
+                        value && value.length < 6 ? 'TOO_SHORT' : undefined
+                        }
+                    >
+                        {({ fieldProps, error, valid, meta }) => (
+                        <Fragment>
+                            <TextField type="password" {...fieldProps} />
+                            {!error && !valid && (
+                            <HelperMessage>
+                                Use 6 or more characters with a mix of letters, numbers &
+                                symbols.
+                            </HelperMessage>
+                            )}
+                            {error && (
+                            <ErrorMessage>
+                                Password needs to be more than 8 characters.
+                            </ErrorMessage>
+                            )}
+                            {valid && meta.dirty ? (
+                            <ValidMessage>Great password!</ValidMessage>
+                            ) : null}
+                        </Fragment>
+                        )}
+                    </Field>
+                    <FormFooter>
+                        <ButtonGroup>
+                        <Button type="submit" appearance="primary" isLoading={submitting}>
+                            Sign Up
+                        </Button>
+                        </ButtonGroup>
+                    </FormFooter>
+                    </form>
                 )}
-            </Field>
-            <Field
-                name="password"
-                label="Password"
-                defaultValue=""
-                isRequired
-                validate={value =>
-                value && value.length < 6 ? 'TOO_SHORT' : undefined
-                }
-            >
-                {({ fieldProps, error, valid, meta }) => (
-                <Fragment>
-                    <TextField type="password" {...fieldProps} />
-                    {!error && !valid && (
-                    <HelperMessage>
-                        Use 6 or more characters with a mix of letters, numbers &
-                        symbols.
-                    </HelperMessage>
-                    )}
-                    {error && (
-                    <ErrorMessage>
-                        Password needs to be more than 8 characters.
-                    </ErrorMessage>
-                    )}
-                    {valid && meta.dirty ? (
-                    <ValidMessage>Great password!</ValidMessage>
-                    ) : null}
-                </Fragment>
-                )}
-            </Field>
-            <FormFooter>
-{/*                 <CreateStyle>
-                    <CreateAccountButton color="primary" href="/register">Create Account</CreateAccountButton>
-                </CreateStyle> */}
-                <ButtonGroup>
-                {/* <Button appearance="subtle">Cancel</Button> */}
-
-                <Button type="submit" appearance="primary" isLoading={submitting}>
-                    Sign Up
-                </Button>
-                </ButtonGroup>
-            </FormFooter>
-            </form>
-        )}
-        </Form>
-        </Container>
+                </Form>
+            </Container>
         </div>
     );
 

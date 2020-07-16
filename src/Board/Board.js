@@ -4,12 +4,7 @@ import Column from './Column';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import transformResponseData from "../transformResponseData";
 import CreateIssue from '../Issue/CreateIssue';
-
-import Button from '@atlaskit/button';
-
-import GetBoardData from './GetBoardData';
 
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
@@ -28,6 +23,15 @@ const Heading = styled.h2`
     color: #172B4D;
     text-align: left;
     padding-left: .2em;
+`
+
+const SubHeading = styled.p`
+    font-size: 16px;
+    color: #A5ADBA;
+    font-weight: bold;
+    font-style: italic;
+    padding-right: 2em;
+    margin-top: .3em;
 `
 
 const GridRow = styled.div`
@@ -60,30 +64,14 @@ export default class Board extends Component {
 
     constructor(props) {
         super(props);
-
-        console.log("BOARD HERE: ", this.props);
     }
 
     state = {
-        //data: transformResponseData(this.props.history.location.state.dataSent),
         loading: true,
         initialized: false,
         boardMember: null,
         data: this.props.data,
         members: null, 
-        //Testing
-        //data: transformResponseData(BoardData(this.props.boardId)),
-
-    }
-
-    componentDidMount = () => {
-        
-/*         console.log(this.props);
-        this.setState({
-            boardMember: this.props.history.location.state.boardMember,
-            data: transformResponseData(this.props.history.location.state.dataSent),
-        })
-        console.log(this.state.data); */
     }
 
     updateBoardOnCreate = issue => {
@@ -109,8 +97,6 @@ export default class Board extends Component {
         }
 
         //Update issueIds for the new Issue's Column
-        //Testing
-
         const oldIssueIds = this.state.data.columns['column-' + issue.columnId].issueIds;
         
         //Moves the newly created Issue to the top of the Column
@@ -256,9 +242,7 @@ export default class Board extends Component {
                         ...currentIssue,
                     }
                 }
-            })
-
-            //this.state.data.issues[issueIds[i]].position = i;
+            });
         }
     }
 
@@ -276,7 +260,6 @@ export default class Board extends Component {
             }
         })
 
-        //this.state.data.issues[issueId].columnId = destinationColumn.columnId.replace("column-","");
     }
 
     //multipleColumns is a flag indicating whether or not multiple columns were 
@@ -373,38 +356,40 @@ export default class Board extends Component {
         return (
             <div>
                 <TopAppBar />
-            <GridRow>
-                <GridColumn>
-                    <Heading>{this.props.boardName}</Heading>
-                </GridColumn>
-            </GridRow>
-            <GridRow>
-                <GridColumn>
-                    <AvatarGroup max={4}>
-                    {this.props.members != null && this.props.members.map(teamMember => {
-                        return(
-                            <ToolTipStyled title={teamMember.username} placement="top" arrow>
-                            <Avatar style={{cursor: 'pointer'}} alt={teamMember.username} src={teamMember.avatar} />
-                            </ToolTipStyled>
-                        )
-                    })}
-                    </AvatarGroup>
-                </GridColumn>
-            </GridRow>
-            <Container>
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                    {this.state.data.columnOrder.map(colId => {
-                        const column = this.state.data.columns[colId];
-                        const issues = column.issueIds.map(issId => this.state.data.issues[issId]);
+                <GridRow>
+                    <GridColumn>
+                        <Heading>{this.props.boardName}</Heading>
+                    </GridColumn>
+                </GridRow>
+                <GridRow>
+                    <GridColumn>
+                        <SubHeading>Team Members: </SubHeading>
+                    </GridColumn>
+                    <GridColumn>
+                        <AvatarGroup max={4}>
+                        {this.props.members != null && this.props.members.map(teamMember => {
+                            return(
+                                <ToolTipStyled title={teamMember.username} placement="top" arrow>
+                                <Avatar style={{cursor: 'pointer'}} alt={teamMember.username} src={teamMember.avatar} />
+                                </ToolTipStyled>
+                            )
+                        })}
+                        </AvatarGroup>
+                    </GridColumn>
+                </GridRow>
+                <Container>
+                    <DragDropContext onDragEnd={this.onDragEnd}>
+                        {this.state.data.columnOrder.map(colId => {
+                            const column = this.state.data.columns[colId];
+                            const issues = column.issueIds.map(issId => this.state.data.issues[issId]);
 
-                        return <Column key={column.columnId} column={column} issues={issues} deleteIssue={this.deleteIssue} members={this.props.members} currentUser={this.props.currentUser} />
-                    })}
-                    
-                </DragDropContext>
-            </Container>
-            <ButtonSpacing>
-                        <CreateIssue updateBoard={this.updateBoardOnCreate} issues={this.state.data.issues} boardId={this.state.data.boardId} columns={this.state.data.columns} members={this.props.members} currentUser={this.props.currentUser} />
-                    </ButtonSpacing>
+                            return <Column key={column.columnId} column={column} issues={issues} deleteIssue={this.deleteIssue} members={this.props.members} currentUser={this.props.currentUser} />
+                        })}        
+                    </DragDropContext>
+                </Container>
+                <ButtonSpacing>
+                    <CreateIssue updateBoard={this.updateBoardOnCreate} issues={this.state.data.issues} boardId={this.state.data.boardId} columns={this.state.data.columns} members={this.props.members} currentUser={this.props.currentUser} />
+                </ButtonSpacing>
             </div>
         );
     }

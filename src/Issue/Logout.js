@@ -14,7 +14,7 @@ let currentUser = null;
 export default function Logout() {
     useEffect(() => {
         checkUser()
-      }, [])
+      }, []);
 
     const history = useHistory();
 
@@ -33,7 +33,7 @@ export default function Logout() {
             if (error === "No current user") {
                 history.push("/");
             }
-            console.log("Error: ", error);
+            //console.log("Error: ", error);
         }
     }
 
@@ -42,7 +42,7 @@ export default function Logout() {
             await Auth.signOut({ global: true });
             setRedirect(true);
         } catch (error) {
-            console.log('error signing out: ', error);
+            //console.log('error signing out: ', error);
             Auth.signOut();
         }
     }
@@ -54,17 +54,9 @@ export default function Logout() {
     }
 
     if (redirect === true) {
-        return (
-            <Home />
-        )
+        history.push('/logout-redirect');
     }
 
     return null;
-
-    
-
-    /* return (
-        <Button appearance="primary" onClick={() => signOut()}>Logout</Button>
-    ); */
 
 }

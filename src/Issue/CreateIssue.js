@@ -115,10 +115,6 @@ export default class CreateIssue extends Component {
     }
 
     onFormSubmit = (data) => {
-        //console.log(JSON.stringify(data));
-        //console.log(data['summary']);
-        //console.log("input:", data.summary);
-
         this.sendPostRequest(data.summary);
     }
 
@@ -129,7 +125,11 @@ export default class CreateIssue extends Component {
         }
         else if (priorityValue === '') {
             this.setState({error: 'NO_PRIORITY'});
-            return
+            return;
+        }
+        else if (assignee_username === '') {
+            this.setState({error: 'NO_ASSIGNEE'});
+            return;
         }
 
         //Testing: Find the column in position 0
@@ -234,10 +234,6 @@ export default class CreateIssue extends Component {
 
         return (
             <div>
-                <Fab style={{ backgroundColor: "#0052CC", borderSpacing: '1.2em' }} size="large" color="primary" aria-label="Create Issue" variant="extended" onClick={() => this.open()}>
-                    <AddIcon />
-                    Create Issue
-                </Fab>
                 <Button appearance="primary" onClick={() => this.open()}>Create Issue</Button>
                     <ModalTransition>
                         {this.state.isOpen && (
@@ -292,6 +288,11 @@ export default class CreateIssue extends Component {
                                         {this.state.error === 'NO_PRIORITY' && (
                                             <ErrorMessage>
                                             Please select a priority. 
+                                            </ErrorMessage>
+                                        )}
+                                        {this.state.error === 'NO_ASSIGNEE' && (
+                                            <ErrorMessage>
+                                                Please select an assignee.
                                             </ErrorMessage>
                                         )}
 

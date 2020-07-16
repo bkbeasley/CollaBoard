@@ -4,9 +4,6 @@ import Button from '@atlaskit/button';
 
 import { useHistory, Redirect } from 'react-router-dom';
 
-import { Auth } from 'aws-amplify';
-//import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
-
 import styled from 'styled-components';
 
 import axios from 'axios';
@@ -26,6 +23,11 @@ import CreateBoard from '../Board/CreateBoard';
 import CreateTeam from '../CreateTeam';
 
 import Api from '../api-config';
+
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../aws-exports';
+
+Amplify.configure(awsconfig);
 
 
 const Container = styled.div`
@@ -84,7 +86,7 @@ const UsernameText = styled.p`
 `
 
 const AvatarCol = styled.div`
-    padding-left: .5em;
+    padding-left: .8em;
 `
 
 const BoardButton = styled.div`
@@ -171,7 +173,6 @@ function Dashboard() {
             setUser(userInfo)
             result = await Auth.currentUserInfo();
 
-            //Testing 
             await axios.post(Api.domain + 'users/member', {
                 username: username,
             })
@@ -183,19 +184,11 @@ function Dashboard() {
                 username: username,
             })
             .then(response => {
-                //setBoardId(response.data);
                 id = parseInt(response.data);
                 boardId = id;
             })
 
             loadTeam();
-            //setHasBoard(result.attributes['custom:hasBoard']);
-            //setBoardId(result.attributes['custom:boardId']);
-            
-            //let id = result.attributes['custom:boardId'];
-            //id = parseInt(id);
-            //boardId = id;
-            //console.log("BoardID:::", typeof id);
             
             //Retrieve the board name
             if ({hasBoard}) {
@@ -218,7 +211,7 @@ function Dashboard() {
                 history.push('/login');
                 
             } 
-            console.log('error: ', err); 
+            //console.log('error: ', err); 
         }
     }
 
@@ -243,9 +236,6 @@ function Dashboard() {
                 username: username,
             }
         }).then((response) => {
-            //boardOwner = response.data;
-
-            //Testing New
             setBoardOwner(response.data);
 
             //Check if the user is a team member
@@ -287,11 +277,6 @@ function Dashboard() {
     function createNewBoard() {
         history.push('/board-create', { owner: username });
     }
-
-    /* function createNewTeam() {
-
-        history.push('/team-create', { currentUser: username });
-    } */
 
     function viewMyTeam() {
         axios({
@@ -376,61 +361,54 @@ function Dashboard() {
         )
     }
 
-    //Redirect to /team-request
-   /*  if (toRequest === true) {
-        return (
-            <TeamRequest username={username} avatar={avatarUrl} />
-        )
-    } */
-
     return (    
              <div>
-                    {toRequest && (
-                        <TeamRequest username={username} avatar={avatarUrl} closeModal={closeTeamRequest}/>
-                    )}
-                    {toCreateBoard && (
-                        <CreateBoard owner={username} closeModal={closeCreateBoard} />
-                    )}
-                    {toCreateTeam && (
-                        <CreateTeam currentUser={username} closeModal={closeCreateTeam} />
-                    )}
-                    <Row>
-                            <TopAppBar />
-                    </Row>
-            <Row>
-                <Column size={1}>
-                    <HeadingText>Your Dashboard</HeadingText>
-                </Column>
-            </Row>
-            <AccountDetails>               
-                <SubHeadingText>Account details</SubHeadingText>
-                <Row>
-                    <Column>
-                        <DetailText>Avatar: </DetailText>
-                    </Column>
-                    <Column>
-                        <AvatarCol>
-                            <Avatar src={avatarUrl} />
-                        </AvatarCol>
-                    </Column>
-                </Row>
-                <Row>
-                    <Column>
-                        <DetailText>Username: </DetailText>
-                    </Column>
-                    <Column>
-                        <UsernameText>{user.username}</UsernameText>
-                    </Column>
-                </Row>
-                <SubHeadingText>Your Boards</SubHeadingText>
-                {hasBoard === true && (
-                    <Column>
-                        <BoardText>{name}</BoardText>
-                            <BoardButton>
-                                <Button appearance="primary" onClick={() => getBoardData()} >View Board</Button>
-                            </BoardButton>
-                    </Column>                        
+                {toRequest && (
+                    <TeamRequest username={username} avatar={avatarUrl} closeModal={closeTeamRequest}/>
                 )}
+                {toCreateBoard && (
+                    <CreateBoard owner={username} closeModal={closeCreateBoard} />
+                )}
+                {toCreateTeam && (
+                    <CreateTeam currentUser={username} closeModal={closeCreateTeam} />
+                )}
+                <Row>
+                        <TopAppBar />
+                </Row>
+                <Row>
+                    <Column size={1}>
+                        <HeadingText>Your Dashboard</HeadingText>
+                    </Column>
+                </Row>
+                <AccountDetails>               
+                    <SubHeadingText>Account details</SubHeadingText>
+                    <Row>
+                        <Column>
+                            <DetailText>Avatar: </DetailText>
+                        </Column>
+                        <Column>
+                            <AvatarCol>
+                                <Avatar src={avatarUrl} />
+                            </AvatarCol>
+                        </Column>
+                    </Row>
+                    <Row>
+                        <Column>
+                            <DetailText>Username: </DetailText>
+                        </Column>
+                        <Column>
+                            <UsernameText>{user.username}</UsernameText>
+                        </Column>
+                    </Row>
+                    <SubHeadingText>Your Boards</SubHeadingText>
+                    {hasBoard === true && (
+                        <Column>
+                            <BoardText>{name}</BoardText>
+                                <BoardButton>
+                                    <Button appearance="primary" onClick={() => getBoardData()} >View Board</Button>
+                                </BoardButton>
+                        </Column>                        
+                    )}
                 {/* If the user has not created a Board or has not joined a Team*/}
                 {hasBoard === false && (
                     <Column>

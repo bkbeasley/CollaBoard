@@ -45,8 +45,6 @@ function TeamRequest(user) {
             if (response.data) {
                 setEmptyStringError(false);
                 user.closeModal();
-                //Testing
-                //setRedirectUser(true);
             }
             else {
                 setEmptyStringError(true);

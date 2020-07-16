@@ -17,9 +17,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 
 import Api from '../api-config';
 
-import Amplify, { Auth, a } from 'aws-amplify';
-import awsconfig from '../aws-exports';
-Amplify.configure(awsconfig);
+import Amplify, { Auth } from 'aws-amplify';
 
 const Text = styled.h3`
     color: grey;
@@ -71,8 +69,7 @@ export default class CreateBoard extends Component {
                 .catch(err => console.log(err));
         } 
         catch (err) { 
-            
-            console.log('error: ', err) 
+            //console.log('error: ', err) 
         }
     }
 
@@ -119,10 +116,6 @@ export default class CreateBoard extends Component {
 
         const columns = [column1, column2, column3, column4];
 
-        //let testC = [{"title": "P", "position": 3,}];
-
-        //this.updateAttributes('2');
-
         axios({
             method: 'post',
             url: Api.domain + 'boards',
@@ -137,6 +130,7 @@ export default class CreateBoard extends Component {
     }
 
     updateBoardOwner() {
+
         axios({
             method: 'put',
             url: Api.domain + 'users/board-owner',
@@ -144,7 +138,7 @@ export default class CreateBoard extends Component {
                 username: owner,
             }
         }).then((response) => {
-            //console.log("finished updating board owner ", response.data);
+
         });
     }
 
@@ -189,15 +183,15 @@ export default class CreateBoard extends Component {
                                         Cancel
                                     </Button>
                                     <Button type="submit" appearance="primary">
-                                        Create Team
+                                        Create Board
                                     </Button>
                                 </DialogActions>
                             </FormFooter>
                                     </form>
                                 )}
                         </Form>
-                        </DialogContent>
-                        </Dialog>
+                    </DialogContent>
+                </Dialog>
             </div>
         );
     }

@@ -25,10 +25,6 @@ import createHistory from 'history/createBrowserHistory';
 
 import Api from './api-config';
 
-import Dashboard from './Issue/Dashboard';
-import Login from './Login';
-import GetBoardData from './Board/GetBoardData';
-
 import axios from 'axios';
 
 import Avatar from '@atlaskit/avatar';
@@ -67,12 +63,18 @@ const Title = styled.h3`
     }
 `
 
+const AvatarSpacing = styled.div`
+    text-align: right;
+    padding-right: 20em;
+`
+
 
 const history = createHistory();
 let username = null;
 const avatarUrl = 'https://api.adorable.io/avatars/285/';
 let finalAvatar = '';
 let hasBoard = null;
+let hasTeam = null;
 
 export default function TopAppBar() {
 
@@ -100,10 +102,12 @@ export default function TopAppBar() {
 
     async function checkUser() {
         try{
-            const data = await Auth.currentUserPoolUser()
-            const userInfo = { username: data.username, ...data.attributes, }
+            const data = await Auth.currentUserPoolUser();
+            const userInfo = { username: data.username, ...data.attributes, };
             username = userInfo['username'];
-            hasBoard = userInfo['custom:hasBoard'];
+            hasBoard = checkBoardMember(username);
+            hasTeam = checkTeamMember(username);
+
             loadAvatar(username);
 
             if (username != null) {
@@ -114,6 +118,30 @@ export default function TopAppBar() {
         catch{
 
         }
+    }
+
+    async function checkBoardMember(username) {
+        await axios({
+            method: 'post',
+            url: Api.domain + 'users/member',
+            data: {
+                username: username,
+            }
+        }).then(response => {
+            return response.data;
+        });
+    }
+
+    async function checkTeamMember(username) {
+        await axios({
+            method: 'post',
+            url: Api.domain + 'users/team-member',
+            data: {
+                username: username,
+            }
+        }).then(response => {
+            return response.data;
+        })
     }
 
     async function loadAvatar(username) {
@@ -147,11 +175,7 @@ export default function TopAppBar() {
             history.go(0);
         }
         else{
-            return (
-                <Redirect to={{
-                    pathname: '/login',
-                }} />
-            );
+            history.push('/login');
         }
     }
 
@@ -169,11 +193,7 @@ export default function TopAppBar() {
             history.go(0);
         }
         else {
-            return (
-                <Redirect to={{
-                    pathname: '/dashboard',
-                }} />
-            );
+            history.push('/dashboard');
         }
     }
 
@@ -183,13 +203,7 @@ export default function TopAppBar() {
         history.go(0);
       }
       else {
-
-        return (
-          <Redirect to={{
-            pathname: '/board',
-            }} 
-          />
-          );
+          history.push('/board');
       }
     }
 
@@ -199,11 +213,7 @@ export default function TopAppBar() {
             history.go(0);
         }
         else {
-            return (
-                <Redirect to={{
-                    pathname: '/team',
-                }} />
-            );
+            history.push('/team');
         }
     }
 
@@ -213,11 +223,7 @@ export default function TopAppBar() {
             history.go(0);
         }
         else {
-            return (
-                <Redirect to={{
-                    pathname: '/',
-                }} />
-            );
+            history.push('/');
         }
     }
 
@@ -241,7 +247,7 @@ export default function TopAppBar() {
                               </ListItemIcon>
                               <ListItemText primary="Board" />
                             </ListItem>
-                            <ListItem button disabled={!hasBoard} onClick={() => setToTeam(true)}>
+                            <ListItem button disabled={!hasTeam} onClick={() => setToTeam(true)}>
                                 <ListItemIcon>
                                     <GroupIcon />
                                 </ListItemIcon>
@@ -282,7 +288,6 @@ export default function TopAppBar() {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={() => setToLogout(true)}>Sign Out</MenuItem>
-                                {/*<MenuItem onClick={handleClose}>My account</MenuItem> */}
                             </Menu>
                         </div>
                     )}

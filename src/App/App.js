@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
-//import Routes from '../Routes/Routes';
+
 import { Router, Route, Switch } from 'react-router-dom';
 import history from '../utils/history';
-import Board from "../Board/Board";
 
 import Login from "../Login";
 import Registration from "../Registration";
@@ -11,26 +10,13 @@ import Logout from '../Issue/Logout';
 import Dashboard from '../Issue/Dashboard';
 import CreateBoard from '../Board/CreateBoard';
 import Home from '../Home';
-import PrivateRoute from '../PrivateRoute';
 import CreateTeam from '../CreateTeam';
 import Team from '../Team/Team';
 import TeamRequest from '../Team/TeamRequest';
 
 import GetBoardData from '../Board/GetBoardData';
-import TopAppBar from '../TopAppBar';
+import LogoutStage from '../LogoutStage';
 
-
-
-/* export default class App extends Component{
-
-  render() {
-    return (
-          <Routes />
-    );
-  }
-
-  
-} */
 
 function App() {
 
@@ -49,6 +35,7 @@ function App() {
           <Route path="/team-request" component={TeamRequest} />
           <Route path="/team" component={Team} />
           <Route path="/logout" component={Logout} />
+          <Route path="/logout-redirect" component={LogoutStage} />
         </Switch>
       </Router>
     </div>

@@ -9,12 +9,14 @@ import Form, { Field, FormFooter, ErrorMessage, HelperMessage, ValidMessage } fr
 
 import TextField from '@atlaskit/textfield';
 
-import Amplify, { Auth, signInButton } from 'aws-amplify';
-import awsconfig from './aws-exports';
-
 import styled from 'styled-components';
 
 import TopAppBar from './TopAppBar';
+
+import authConfig from './index';
+
+import Amplify, { Auth, signInButton } from 'aws-amplify';
+import awsconfig from './aws-exports';
 
 Amplify.configure(awsconfig);
 
@@ -42,10 +44,12 @@ export default function Login() {
         history.push("/dashboard")
         
     } catch (error) {
-        console.log('error signing in', error);
+        //console.log('error signing in', error);
 
         if (error.message === "User does not exist.") {
-          
+          setLoginError(true);
+        }
+        else if (error.message === "Incorrect username or password.") {
           setLoginError(true);
         }
     }
@@ -88,7 +92,7 @@ export default function Login() {
               defaultValue=""
               isRequired
               validate={value =>
-                value && value.length < 4 ? 'TOO_SHORT' : undefined
+                value && value.length < 8 ? 'TOO_SHORT' : undefined
               }
             >
               {({ fieldProps, error, valid, meta }) => (
@@ -105,9 +109,6 @@ export default function Login() {
                       Password needs to be more than 8 characters.
                     </ErrorMessage>
                   )}
-                  {valid && meta.dirty ? (
-                    <ValidMessage>Awesome password!</ValidMessage>
-                  ) : null}
                 </Fragment>
               )}
             </Field>
@@ -116,7 +117,6 @@ export default function Login() {
                 <CreateAccountButton color="primary" href="/register">Create Account</CreateAccountButton>
               </CreateStyle>
               <ButtonGroup>
-                {/*<Button appearance="subtle">Cancel</Button> */}
                 <Button type="submit" appearance="primary" isLoading={submitting}>
                   Log In
                 </Button>

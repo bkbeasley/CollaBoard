@@ -30,8 +30,6 @@ export default class Priority extends Component {
     }
 
     setPriority = (event) => {
-        console.log("UUU ", event.target.value);
-        //this.props.setPriority(val);
         this.setState({ value: event.target.value });
     }
 

@@ -50,101 +50,100 @@ function GetBoardData() {
             const data = await Auth.currentUserPoolUser()
             const userInfo = { username: data.username, ...data.attributes, }
             username = userInfo['username'];
+            
+            currentUser = username;
 
             result = await Auth.currentUserInfo();
 
-            //Testing
             await axios.post(Api.domain + 'users/member', {
                 username: username,
             })
             .then(response => {
                 hasBoard = response.data;
-            });
-            //hasBoard = result.attributes['custom:hasBoard'];
-            
-            //let id = result.attributes['custom:boardId'];
-            //id = parseInt(id);
 
-            await axios.post(Api.domain + 'users/board-id', {
-                username: username,
-            })
-            .then(response => {
-                boardId = parseInt(response.data);
-            })
-
-            //Testing to get the team name
-            await axios.post(Api.domain + 'users/team-name', {
-                username: username
-            }).then(response => {
-                teamName = response.data;
-
-                //If the user has not created a team
-                if (teamName === '') {
-                    noTeam = true;
-                }
-            })
-
-            //boardId = id;
-            await axios.post(Api.domain + 'boards/get', {
-                boardId: boardId,
-            })
-            .then(response => {
-                boardName = response.data.boardName;
-                boardData = transformResponseData(response.data);
-
-                let obj = {};
-                let finalMembers = [];
-
-                //If the user has not created a team yet
-                if (noTeam) {
-                    axios.post(Api.domain + 'users/avatar', {
-                        username: username
-                    })
-                    .then(response => {
-                        obj = {
-                            username: username,
-                            avatar: avatarUrl + response.data,
-                        }
-                        currentUser = obj;
-                        finalMembers.push(currentUser);
-                        teamMembers = finalMembers;
-                        setLoading(false);
-                        
-                        return;
-                    })
-                }
-
-                axios.post(Api.domain + 'users/members/team-members', {
-                    teamName: teamName,
+                axios.post(Api.domain + 'users/board-id', {
+                    username: username,
                 })
                 .then(response => {
-                    let members = response.data;
+                    boardId = parseInt(response.data);
 
-                    for (let i = 0; i < members.length; i++) {
-                        obj = {
-                            username: members[i].username,
-                            avatar: avatarUrl + members[i].avatar,
+                     //Get the team name
+                    axios.post(Api.domain + 'users/team-name', {
+                        username: username
+                    }).then(response => {
+                        teamName = response.data;
+
+                        //If the user has not created a team
+                        if (teamName === '') {
+                            noTeam = true;
                         }
-                        finalMembers.push(obj);
-                    }
-                    teamMembers = finalMembers;
-                    setCurrentUser(teamMembers);
-                    setLoading(false);
-                })  
-            })  
+
+                        axios.post(Api.domain + 'boards/get', {
+                            boardId: boardId,
+                        })
+                        .then(response => {
+                            boardName = response.data.boardName;
+                            boardData = transformResponseData(response.data);
+            
+                            let obj = {};
+                            let finalMembers = [];
+            
+                            //If the user has not created a team yet
+                            if (noTeam) {
+                                axios.post(Api.domain + 'users/avatar', {
+                                    username: username
+                                })
+                                .then(response => {
+                                    obj = {
+                                        username: username,
+                                        avatar: avatarUrl + response.data,
+                                    }
+                                    currentUser = obj;
+                                    finalMembers.push(currentUser);
+                                    teamMembers = finalMembers;
+                                    setLoading(false);
+                                    
+                                    return;
+                                })
+                            }
+            
+                            axios.post(Api.domain + 'users/members/team-members', {
+                                teamName: teamName,
+                            })
+                            .then(response => {
+                                let members = response.data;
+            
+                                for (let i = 0; i < members.length; i++) {
+                                    obj = {
+                                        username: members[i].username,
+                                        avatar: avatarUrl + members[i].avatar,
+                                    }
+                                    finalMembers.push(obj);
+                                }
+                                teamMembers = finalMembers;
+                                setCurrentUser(teamMembers);
+                                setLoading(false);
+                            })  
+                        })  
+
+                    });
+
+                });
+
+            });
+           
         }
         catch (err) {
             //If the user is not logged in
             if (err === 'No current user') {
                 history.push('/login');  
             } 
-            console.log('error: ', err);
+            //console.log('error: ', err);
         }
 
     }
 
     function setCurrentUser(members) {
-
         for (let i = 0; i < members.length; i++) {
             if (members[i].username === username) {
                 currentUser = members[i];

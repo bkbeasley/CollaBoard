@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import EditIssue from '../Issue/EditIssue';
 
 const Container = styled.div`
-    border: ${props => (props.isDragging ? '0px' : '1px solid #FFFFFF')};
+    border: ${props => (props.isDragging ? '1.5px solid #000000' : '1px solid #FFFFFF')};
     border-radius: 2px;
     padding: 18px;
     margin-bottom: 4px;
@@ -18,6 +18,7 @@ const Container = styled.div`
         color: white;
         opacity: 1.0;
         cursor: pointer;
+        border: 1.5px solid #000000;
     }
 `
 
