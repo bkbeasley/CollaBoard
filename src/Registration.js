@@ -18,7 +18,20 @@ import TopAppBar from './TopAppBar';
 
 import Api from './api-config';
 
-Amplify.configure(awsconfig);
+Amplify.configure({
+    Auth: {
+  
+        // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
+        identityPoolId: 'us-east-2_86ZemgUAF',
+  
+        // REQUIRED - Amazon Cognito Region
+        region: 'us-east-2',
+  
+        // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
+        userPoolWebClientId: 'aluu9k2i3cb48f29sub579fpk',
+  
+    }
+  });
 
 let username = '';
 let password = '';
