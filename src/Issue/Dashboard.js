@@ -168,6 +168,7 @@ function Dashboard() {
             const data = await Auth.currentUserPoolUser();
             const userInfo = { username: data.username, ...data.attributes, };
             username = userInfo['username'];
+            console.log("Username is: ", username);
             
             loadAvatar();
             setUser(userInfo)

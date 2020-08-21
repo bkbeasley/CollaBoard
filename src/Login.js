@@ -52,7 +52,6 @@ export default function Login() {
     const password = userData.password;
 
       try {
-        console.log("WELCOME ");
         await Auth.signIn(username, password);
         history.push("/dashboard")
         
