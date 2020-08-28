@@ -15,6 +15,6 @@ Jira inspired Kanban Board built with React and Spring Boot
 * The app should now be running on `http://localhost:3000/`
 
 ## Examples :link:
-* [New user registration](https://raw.githubusercontent.com/bkbeasley/CollaBoard/master/images/demo/registration_demo.gif?token=AF7VSEZRRG3GBGIAMRYZUC27JGELO "New user registration demo")
-* [Performing CRUD operations with issues](https://raw.githubusercontent.com/bkbeasley/CollaBoard/master/images/demo/crud_demo.gif?token=AF7VSEZTW55FZHCX2RXALHK7JGCZG "CRUD demo")
-* [Creating and managing a team](https://raw.githubusercontent.com/bkbeasley/CollaBoard/master/images/demo/team_demo.gif?token=AF7VSE3GTMH6W3DZTZP5E6C7JGEP2 "New team demo") 
+* [New user registration](https://collaboard-demo-images.s3.us-east-2.amazonaws.com/registration_demo.gif "New user registration demo")
+* [Performing CRUD operations with issues](https://collaboard-demo-images.s3.us-east-2.amazonaws.com/crud_demo.gif "CRUD demo")
+* [Creating and managing a team](https://collaboard-demo-images.s3.us-east-2.amazonaws.com/team_demo.gif "New team demo") 
